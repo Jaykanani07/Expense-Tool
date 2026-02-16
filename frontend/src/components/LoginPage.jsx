@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from "react";
 const LOCAL_USERS_KEY = "emt_local_users";
 
 const GOOGLE_CLIENT_ID =
-  "784857874574-2t893f6jua00ttbb7b6ekfnp3i18qa04.apps.googleusercontent.com";
+  "784857874574-oibifjsulhc6fqsdlrinnegloi98oj2t.apps.googleusercontent.com";
 
 const API_BASE = import.meta.env.VITE_API_URL;
 
