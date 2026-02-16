@@ -264,41 +264,59 @@ exports.shareGroupByEmail = async (req, res) => {
         to: member.email,
         subject: `View expenses for ${group.name}`,
         html: `
-  <div style="font-family: Arial, sans-serif; padding: 20px; background:#f4f6f8;">
-    <div style="max-width:600px; margin:auto; background:white; padding:20px; border-radius:8px;">
+  <div style="margin:0; padding:0; background-color:#f4f6f8; font-family:Arial, sans-serif;">
+    <table align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; margin:auto; background:white; border-radius:8px; overflow:hidden;">
       
-      <h2 style="color:#2c3e50; margin-top:0;">Expense Tool</h2>
-      
-      <p>Hello ${member.name},</p>
-      
-      <p>
-        You’ve been invited to view expenses for 
-        <strong>${group.name}</strong>.
-      </p>
-      
-      <div style="text-align:center; margin:30px 0;">
-        <a href="${link}" 
-           style="background:#2c3e50; color:white; padding:12px 20px; 
-                  text-decoration:none; border-radius:6px; display:inline-block;">
-          View Group Expenses
-        </a>
-      </div>
+      <!-- Header -->
+      <tr>
+        <td style="background:#111827; padding:20px; text-align:center;">
+          <h2 style="color:#ffffff; margin:0;">Expense Tool</h2>
+        </td>
+      </tr>
 
-      <p style="font-size:14px; color:#555;">
-        This is a read-only link. You can securely view and settle your share.
-      </p>
+      <!-- Body -->
+      <tr>
+        <td style="padding:30px;">
+          <p style="font-size:16px; margin-top:0;">Hello ${member.name},</p>
 
-      <hr style="margin:30px 0;" />
+          <p style="font-size:15px; line-height:1.6;">
+            You’ve been invited to view expenses for 
+            <strong>${group.name}</strong>.
+          </p>
 
-      <p style="font-size:12px; color:#999;">
-        This email was sent by Expense Tool.<br/>
-        If you did not expect this email, you can safely ignore it.
-      </p>
+          <div style="text-align:center; margin:30px 0;">
+            <a href="${link}" 
+               style="background:#111827; color:#ffffff; 
+                      padding:14px 22px; text-decoration:none; 
+                      border-radius:6px; font-weight:bold; 
+                      display:inline-block;">
+              View Group Expenses
+            </a>
+          </div>
 
-    </div>
+          <p style="font-size:14px; color:#555;">
+            This secure link allows you to view and settle your share of the expenses.
+          </p>
+
+          <p style="font-size:14px; color:#555;">
+            If you were not expecting this email, you can safely ignore it.
+          </p>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="background:#f9fafb; padding:20px; text-align:center;">
+          <p style="font-size:12px; color:#999; margin:0;">
+            © ${new Date().getFullYear()} Expense Tool<br/>
+            Automated notification — please do not reply.
+          </p>
+        </td>
+      </tr>
+
+    </table>
   </div>
 `,
-
       });
     }
 
@@ -339,41 +357,59 @@ exports.shareGroupWithMember = async (req, res) => {
       to: member.email,
       subject: `View expenses for ${group.name}`,
       html: `
-  <div style="font-family: Arial, sans-serif; padding: 20px; background:#f4f6f8;">
-    <div style="max-width:600px; margin:auto; background:white; padding:20px; border-radius:8px;">
+  <div style="margin:0; padding:0; background-color:#f4f6f8; font-family:Arial, sans-serif;">
+    <table align="center" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px; margin:auto; background:white; border-radius:8px; overflow:hidden;">
       
-      <h2 style="color:#2c3e50; margin-top:0;">Expense Tool</h2>
-      
-      <p>Hello ${member.name},</p>
-      
-      <p>
-        You’ve been invited to view expenses for 
-        <strong>${group.name}</strong>.
-      </p>
-      
-      <div style="text-align:center; margin:30px 0;">
-        <a href="${link}" 
-           style="background:#2c3e50; color:white; padding:12px 20px; 
-                  text-decoration:none; border-radius:6px; display:inline-block;">
-          View Group Expenses
-        </a>
-      </div>
+      <!-- Header -->
+      <tr>
+        <td style="background:#111827; padding:20px; text-align:center;">
+          <h2 style="color:#ffffff; margin:0;">Expense Tool</h2>
+        </td>
+      </tr>
 
-      <p style="font-size:14px; color:#555;">
-        This is a read-only link. You can securely view and settle your share.
-      </p>
+      <!-- Body -->
+      <tr>
+        <td style="padding:30px;">
+          <p style="font-size:16px; margin-top:0;">Hello ${member.name},</p>
 
-      <hr style="margin:30px 0;" />
+          <p style="font-size:15px; line-height:1.6;">
+            You’ve been invited to view expenses for 
+            <strong>${group.name}</strong>.
+          </p>
 
-      <p style="font-size:12px; color:#999;">
-        This email was sent by Expense Tool.<br/>
-        If you did not expect this email, you can safely ignore it.
-      </p>
+          <div style="text-align:center; margin:30px 0;">
+            <a href="${link}" 
+               style="background:#111827; color:#ffffff; 
+                      padding:14px 22px; text-decoration:none; 
+                      border-radius:6px; font-weight:bold; 
+                      display:inline-block;">
+              View Group Expenses
+            </a>
+          </div>
 
-    </div>
+          <p style="font-size:14px; color:#555;">
+            This secure link allows you to view and settle your share of the expenses.
+          </p>
+
+          <p style="font-size:14px; color:#555;">
+            If you were not expecting this email, you can safely ignore it.
+          </p>
+        </td>
+      </tr>
+
+      <!-- Footer -->
+      <tr>
+        <td style="background:#f9fafb; padding:20px; text-align:center;">
+          <p style="font-size:12px; color:#999; margin:0;">
+            © ${new Date().getFullYear()} Expense Tool<br/>
+            Automated notification — please do not reply.
+          </p>
+        </td>
+      </tr>
+
+    </table>
   </div>
 `,
-
     });
 
     res.json({ message: `Link sent to ${member.name}` });
