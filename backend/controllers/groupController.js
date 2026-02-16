@@ -264,11 +264,41 @@ exports.shareGroupByEmail = async (req, res) => {
         to: member.email,
         subject: `View expenses for ${group.name}`,
         html: `
-          <p>Hello ${member.name},</p>
-          <p>You can view group expenses for <b>${group.name}</b> here:</p>
-          <a href="${link}">${link}</a>
-          <p>This is a read-only link.</p>
-        `,
+  <div style="font-family: Arial, sans-serif; padding: 20px; background:#f4f6f8;">
+    <div style="max-width:600px; margin:auto; background:white; padding:20px; border-radius:8px;">
+      
+      <h2 style="color:#2c3e50; margin-top:0;">Expense Tool</h2>
+      
+      <p>Hello ${member.name},</p>
+      
+      <p>
+        You’ve been invited to view expenses for 
+        <strong>${group.name}</strong>.
+      </p>
+      
+      <div style="text-align:center; margin:30px 0;">
+        <a href="${link}" 
+           style="background:#2c3e50; color:white; padding:12px 20px; 
+                  text-decoration:none; border-radius:6px; display:inline-block;">
+          View Group Expenses
+        </a>
+      </div>
+
+      <p style="font-size:14px; color:#555;">
+        This is a read-only link. You can securely view and settle your share.
+      </p>
+
+      <hr style="margin:30px 0;" />
+
+      <p style="font-size:12px; color:#999;">
+        This email was sent by Expense Tool.<br/>
+        If you did not expect this email, you can safely ignore it.
+      </p>
+
+    </div>
+  </div>
+`,
+
       });
     }
 
@@ -309,11 +339,41 @@ exports.shareGroupWithMember = async (req, res) => {
       to: member.email,
       subject: `View expenses for ${group.name}`,
       html: `
-        <p>Hello ${member.name},</p>
-        <p>You can view group expenses for <b>${group.name}</b> here:</p>
-        <a href="${link}">${link}</a>
-        <p>This is a read-only link.</p>
-      `,
+  <div style="font-family: Arial, sans-serif; padding: 20px; background:#f4f6f8;">
+    <div style="max-width:600px; margin:auto; background:white; padding:20px; border-radius:8px;">
+      
+      <h2 style="color:#2c3e50; margin-top:0;">Expense Tool</h2>
+      
+      <p>Hello ${member.name},</p>
+      
+      <p>
+        You’ve been invited to view expenses for 
+        <strong>${group.name}</strong>.
+      </p>
+      
+      <div style="text-align:center; margin:30px 0;">
+        <a href="${link}" 
+           style="background:#2c3e50; color:white; padding:12px 20px; 
+                  text-decoration:none; border-radius:6px; display:inline-block;">
+          View Group Expenses
+        </a>
+      </div>
+
+      <p style="font-size:14px; color:#555;">
+        This is a read-only link. You can securely view and settle your share.
+      </p>
+
+      <hr style="margin:30px 0;" />
+
+      <p style="font-size:12px; color:#999;">
+        This email was sent by Expense Tool.<br/>
+        If you did not expect this email, you can safely ignore it.
+      </p>
+
+    </div>
+  </div>
+`,
+
     });
 
     res.json({ message: `Link sent to ${member.name}` });
