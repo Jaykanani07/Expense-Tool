@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "nodemailer": "^7.0.12",
     "react-router-dom": "^7.12.0"
   }
 }
