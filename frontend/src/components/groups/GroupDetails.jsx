@@ -5,7 +5,8 @@ import GroupBalances from "./GroupBalances";
 import RecentTransactions from "./RecentTransactions";
 import Charts from "./Charts";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_URL;
+
 
 const GroupDetails = ({ group, refreshGroup }) => {
   const [expenses, setExpenses] = useState([]);

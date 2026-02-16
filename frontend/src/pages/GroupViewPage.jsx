@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_URL;
 const formatINR = (value) => {
   const n = Number(value || 0);
   return Number.isInteger(n) ? `${n}` : n.toFixed(2);

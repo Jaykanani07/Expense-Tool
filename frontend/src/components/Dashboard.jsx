@@ -9,7 +9,7 @@ import GroupsPage from "./groups/GroupsPage";
 
 
 /* REQUIRED FOR GOOGLE LOGIN / BACKEND */
-const API_BASE = "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_URL;
 const DEMO_TOKEN =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY5MzkwMzE2N2MwNjNjOTc0NmM1N2RhNyIsImVtYWlsIjoiamF5MUBleGFtcGxlLmNvbSIsImlhdCI6MTc2NTM2NDI5NywiZXhwIjoxNzY1OTY5MDk3fQ.hY3SzmTIepXsKUQMQF8rf4NR7u67Aqom0rgQ8OXUQms";
 

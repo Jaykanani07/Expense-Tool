@@ -5,7 +5,7 @@ const LOCAL_USERS_KEY = "emt_local_users";
 const GOOGLE_CLIENT_ID =
   "784857874574-2t893f6jua00ttbb7b6ekfnp3i18qa04.apps.googleusercontent.com";
 
-const API_BASE = "http://localhost:5000";
+const API_BASE = import.meta.env.VITE_API_URL;
 
 const LoginPage = ({ onLogin }) => {
   const googleBtnRef = useRef(null);
