@@ -63,6 +63,14 @@ const App = () => {
 
   /* ================= LOGIN ================= */
   const handleLogin = (userData) => {
+    console.log("Login callback triggered with user:", userData);
+    
+    if (!userData || !userData.email) {
+      console.error("Invalid user data received:", userData);
+      alert("Login failed: Invalid user data received");
+      return;
+    }
+
     setUser(userData);
     localStorage.setItem("user", JSON.stringify(userData));
     
@@ -79,6 +87,8 @@ const App = () => {
       setProfile(savedProfile ? JSON.parse(savedProfile) : null);
       setRecurringExpenses(savedRecurring ? JSON.parse(savedRecurring) : []);
     }
+    
+    console.log("Login successful, user state updated");
   };
 
   /* ================= LOGOUT ================= */

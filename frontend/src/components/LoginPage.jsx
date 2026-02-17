@@ -12,8 +12,68 @@ const LoginPage = ({ onLogin }) => {
   const cardRef = useRef(null);
   const [activeTab, setActiveTab] = useState("login");
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [googleApiLoaded, setGoogleApiLoaded] = useState(false);
+  const [googleApiError, setGoogleApiError] = useState(false);
 
   /* ================= GOOGLE LOGIN ================= */
+  const handleGoogleLogin = async (response) => {
+    setIsLoading(true);
+    try {
+      console.log("Google login callback triggered");
+      
+      // Decode the JWT token
+      const payload = JSON.parse(atob(response.credential.split(".")[1]));
+      console.log("Google user payload:", payload);
+
+      // Validate required fields
+      if (!payload.email) {
+        throw new Error("No email found in Google response");
+      }
+
+      // 🔑 CALL BACKEND TO GET JWT
+      const res = await fetch(`${API_BASE}/api/auth/google`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+        body: JSON.stringify({
+          email: payload.email,
+          name: payload.name || payload.given_name + " " + payload.family_name,
+          picture: payload.picture,
+        }),
+      });
+
+      console.log("Backend response status:", res.status);
+      
+      const data = await res.json();
+      console.log("Backend response data:", data);
+
+      if (!res.ok) {
+        throw new Error(data.message || `Login failed: ${res.status}`);
+      }
+
+      if (!data.token || !data.user) {
+        throw new Error("Invalid response from server");
+      }
+
+      // ✅ STORE TOKEN & USER (VERY IMPORTANT)
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      localStorage.setItem("emt_user", JSON.stringify(data.user));
+
+      console.log("Login successful, calling onLogin callback");
+      onLogin(data.user);
+      
+    } catch (err) {
+      console.error("Google login error:", err);
+      alert(`Login failed: ${err.message || "Please try again"}`);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const initializeGoogleAuth = () => {
     /* global google */
     if (!window.google || !GOOGLE_CLIENT_ID) {
@@ -25,43 +85,9 @@ const LoginPage = ({ onLogin }) => {
     try {
       window.google.accounts.id.initialize({
         client_id: GOOGLE_CLIENT_ID,
-        callback: async (response) => {
-          try {
-            const payload = JSON.parse(
-              atob(response.credential.split(".")[1])
-            );
-
-            // 🔑 CALL BACKEND TO GET JWT
-            const res = await fetch(`${API_BASE}/api/auth/google`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                email: payload.email,
-                name: payload.name,
-                picture: payload.picture,
-              }),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-              alert(data.message || "Google login failed");
-              return;
-            }
-
-            // ✅ STORE TOKEN & USER (VERY IMPORTANT)
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data.user));
-            localStorage.setItem("emt_user", JSON.stringify(data.user));
-
-            onLogin(data.user);
-          } catch (err) {
-            console.error("Google login error:", err);
-            alert("Google login error. Please try again.");
-          }
-        },
+        callback: handleGoogleLogin,
+        auto_select: false,
+        cancel_on_tap_outside: true,
       });
 
       if (googleBtnRef.current) {
@@ -70,8 +96,13 @@ const LoginPage = ({ onLogin }) => {
           size: "large",
           shape: "pill",
           width: 320,
+          type: "standard",
+          logo_alignment: "center",
         });
       }
+      
+      setGoogleApiLoaded(true);
+      console.log("Google Auth initialized successfully");
     } catch (err) {
       console.error("Failed to initialize Google Auth:", err);
       // Retry after a short delay
@@ -114,13 +145,49 @@ const LoginPage = ({ onLogin }) => {
       }
     };
 
+    // Handle window focus events for better mobile support
+    const handleWindowFocus = () => {
+      if (window.google && googleBtnRef.current && !googleApiLoaded) {
+        try {
+          window.google.accounts.id.renderButton(googleBtnRef.current, {
+            theme: "outline",
+            size: "large",
+            shape: "pill",
+            width: 320,
+          });
+        } catch (err) {
+          console.warn("Failed to render Google button on window focus:", err);
+        }
+      }
+    };
+
     document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('focus', handleWindowFocus);
+
+    // Retry initialization if Google API is still not loaded after 3 seconds
+    const retryTimer = setTimeout(() => {
+      if (!googleApiLoaded && !window.google) {
+        console.warn("Google API still not loaded after 3 seconds, retrying...");
+        initializeGoogleAuth();
+      }
+    }, 3000);
+
+    // Mark as failed if Google API still not available after 8 seconds
+    const failTimer = setTimeout(() => {
+      if (!googleApiLoaded && !window.google) {
+        console.error("Google API failed to load after 8 seconds");
+        setGoogleApiError(true);
+      }
+    }, 8000);
 
     return () => {
       window.removeEventListener('google-loaded', handleGoogleApiLoad);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('focus', handleWindowFocus);
+      clearTimeout(retryTimer);
+      clearTimeout(failTimer);
     };
-  }, [onLogin]);
+  }, [onLogin, googleApiLoaded]);
 
   /* ================= PARTICLE BACKGROUND (DESKTOP) ================= */
   useEffect(() => {
@@ -374,7 +441,32 @@ const LoginPage = ({ onLogin }) => {
               <span>or continue with</span>
             </div>
 
-            <div ref={googleBtnRef} className="google-btn-wrapper" />
+            <div className="google-login-container">
+              {isLoading ? (
+                <div className="loading-state">
+                  <div className="spinner"></div>
+                  <p>Signing you in...</p>
+                </div>
+              ) : googleApiError ? (
+                <div className="google-error-state">
+                  <div className="error-icon">⚠️</div>
+                  <p>Google Sign-In is temporarily unavailable</p>
+                  <p className="error-subtext">Please use email/password login or try again later</p>
+                  <button 
+                    className="retry-btn"
+                    onClick={() => {
+                      setGoogleApiError(false);
+                      setGoogleApiLoaded(false);
+                      initializeGoogleAuth();
+                    }}
+                  >
+                    Try Google Sign-In Again
+                  </button>
+                </div>
+              ) : (
+                <div ref={googleBtnRef} className="google-btn-wrapper" />
+              )}
+            </div>
           </div>
         </div>
       </div>

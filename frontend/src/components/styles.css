@@ -1360,6 +1360,88 @@ textarea {
   justify-content: center;
 }
 
+.google-login-container {
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+}
+
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffba00;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-state p {
+  margin: 0;
+  color: #ffba00;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.google-error-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 1rem;
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.error-icon {
+  font-size: 2rem;
+  filter: grayscale(1);
+}
+
+.google-error-state p {
+  margin: 0;
+  color: #ef4444;
+  font-weight: 600;
+}
+
+.error-subtext {
+  font-size: 0.85rem;
+  color: #fca5a5 !important;
+  font-weight: 400 !important;
+}
+
+.retry-btn {
+  background: #ef4444;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.retry-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.1);
+}
+
 .profile-page {
   display: grid;
   gap: 16px;
